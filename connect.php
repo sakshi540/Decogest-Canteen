@@ -1,16 +1,33 @@
 <?php
-	// Database connection
-	$conn = new mysqli('localhost','root','','food_db');
-	if($conn->connect_error){
-		echo "$conn->connect_error";
-		die("Connection Failed : ". $conn->connect_error);
-	} else {
-		$stmt = $conn->prepare("insert into registration(firstName, lastName, Novalues, email, pass, phoneNo) values(?, ?, ?, ?, ?, ?)");
-		$stmt->bind_param("ssissi", $firstName, $lastName, $Novalues, $email, $password, $phoneNo);
-		$execval = $stmt->execute();
-		echo $execval;
-		echo "Your Table is booked...";
-		$stmt->close();
-		$conn->close();
-	}
+
+$db_name = 'mysql:host=localhost;dbname=food_db';
+$user_name = 'root';
+$user_password = '';
+
+$conn = new PDO($db_name, $user_name, $user_password);
+
+
+session_start();
+$con=mysqli_connect("localhost","root","","food_db");
+
+if(isset($_POST['save_datetime']))
+{
+    $db_name=$_POST['name'];
+    $current_dt=$_POST['current_dt'];
+
+    $query= "INSERT INTO DEMO(name currentdt) VALUES('$db_name','db_current_dt')";
+    $query_run=mysqli-query($con,$query);
+
+    if($query-run)
+    {
+        $_SESSION['status']="Date and Time Inserted successfully";
+        header("Location:checkout.php");
+    }
+    else{
+        $_SESSION['status']="Date and Time is Not Inserted";
+        header("Location:checkout.php");
+    }
+}
+
+
 ?>
